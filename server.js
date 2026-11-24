@@ -9,6 +9,11 @@ app.use(express.json()); // lets the server read JSON sent in request bodies
 // (On Vercel this line is skipped: Vercel serves the public/ folder itself.)
 app.use(express.static('public'));
 
+// On Vercel, the public/ files are served at /index.html, /style.css, etc.,
+// but a visit to plain "/" reaches Express instead. Send those visitors to the page.
+// (On my laptop express.static already handles "/", so this line never runs there.)
+app.get('/', (req, res) => res.redirect('/index.html'));
+
 // ----- Database connection -----
 // On my laptop the server starts once and stays running.
 // On Vercel the app starts up when a request comes in, so instead of connecting
