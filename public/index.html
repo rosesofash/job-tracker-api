@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Tracker</title>
+  <!-- Fonts from the RawBlock design system: Archivo Black, Work Sans, Space Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Job Tracker</h1>
+    <p>Keep track of the jobs you've applied to and the ones you want to apply to.</p>
+  </header>
+
+  <main>
+    <!-- ===== Add / edit form ===== -->
+    <section class="panel" aria-labelledby="form-title">
+      <h2 id="form-title">Add an application</h2>
+
+      <!-- Error and success messages appear here -->
+      <div id="form-message" class="message" role="alert" hidden></div>
+
+      <!--
+        "novalidate" turns off the browser's built-in form checks.
+        The server (Mongoose schema) decides what's valid, and we show its errors.
+        That way the rules live in one place: the database schema.
+      -->
+      <form id="application-form" novalidate>
+        <div class="field">
+          <label for="company">Company <span class="required">(required)</span></label>
+          <input type="text" id="company" autocomplete="organization">
+        </div>
+
+        <div class="field">
+          <label for="role">Role / job title <span class="required">(required)</span></label>
+          <input type="text" id="role">
+        </div>
+
+        <div class="field">
+          <label for="postingUrl">Link to the job posting</label>
+          <input type="text" id="postingUrl" placeholder="https://...">
+        </div>
+
+        <div class="field checkbox-field">
+          <input type="checkbox" id="applied">
+          <label for="applied">I've applied</label>
+        </div>
+
+        <div class="field">
+          <label for="dateApplied">Date applied</label>
+          <input type="date" id="dateApplied">
+        </div>
+
+        <div class="field">
+          <label for="resumeUrl">Resume link</label>
+          <input type="text" id="resumeUrl" placeholder="https://...">
+        </div>
+
+        <div class="field">
+          <label for="coverLetterUrl">Cover letter link</label>
+          <input type="text" id="coverLetterUrl" placeholder="https://...">
+        </div>
+
+        <div class="field">
+          <label for="callback">Callback</label>
+          <select id="callback">
+            <option value="none">No response yet</option>
+            <option value="screen">Phone screen</option>
+            <option value="interview">Interview</option>
+            <option value="offer">Offer</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="notes">Notes</label>
+          <textarea id="notes" rows="3"></textarea>
+        </div>
+
+        <div class="form-buttons">
+          <button type="submit" id="save-button" class="button primary">Add application</button>
+          <!-- Only shown while editing -->
+          <button type="button" id="cancel-button" class="button" hidden>Cancel editing</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===== List of applications ===== -->
+    <section class="panel" aria-labelledby="list-title">
+      <h2 id="list-title">My applications</h2>
+
+      <!-- Filter buttons. data-filter tells app.js which list to load. -->
+      <div class="filters" role="group" aria-label="Filter applications">
+        <button type="button" class="filter-button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="filter-button" data-filter="applied" aria-pressed="false">Applied</button>
+        <button type="button" class="filter-button" data-filter="saved" aria-pressed="false">Want to apply</button>
+      </div>
+
+      <div id="list-message" class="message" role="alert" hidden></div>
+
+      <!-- app.js puts one <li> per application in here -->
+      <ul id="application-list" class="card-list"></ul>
+      <p id="empty-message" class="empty" hidden></p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

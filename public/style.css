@@ -1,0 +1,485 @@
+/*
+  Job Tracker styles, following the RawBlock design system (rawblock-DESIGN.md).
+  RawBlock rules: black on white, thick square borders, no shadows,
+  no rounded corners, uppercase labels, full colour inversion on hover.
+*/
+:root {
+  /* Colours from the design file */
+  --black: #000000;
+  --white: #ffffff;
+  --link: #0000ff;     /* blue is ONLY for links */
+  --success: #008000;
+  --warning: #ffa500;
+  --error: #ff0000;
+  --sunken: #f0f0f0;   /* input background */
+  --sunken-hover: #e8e8e8;
+
+  /* Fonts from the design file (loaded from Google Fonts in index.html) */
+  --font-head: "Archivo Black", "Arial Black", sans-serif;
+  --font-body: "Work Sans", Arial, sans-serif;
+  --font-mono: "Space Mono", "Courier New", monospace;
+
+  /* Borders replace shadows */
+  --border-thin: 1px solid var(--black);
+  --border-thick: 3px solid var(--black);
+  --border-heavy: 5px solid var(--black);
+}
+
+* {
+  box-sizing: border-box;
+  border-radius: 0; /* no rounded corners, anywhere */
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--black);
+  background: var(--white);
+}
+
+a {
+  color: var(--link);
+}
+
+/* ===== Header: an inverted (black) block ===== */
+.site-header {
+  background: var(--black);
+  color: var(--white);
+  padding: 40px 16px 24px;
+  border-bottom: var(--border-heavy);
+}
+
+.site-header h1,
+.site-header p {
+  max-width: 1120px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.site-header h1 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-family: var(--font-head);
+  font-weight: 400;
+  font-size: clamp(40px, 9vw, 64px);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.site-header p {
+  margin-bottom: 0;
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+
+/* ===== Page layout ===== */
+main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 16px 80px;
+  display: grid;
+  gap: 40px;
+}
+
+/* Wider screens: form on the left, list on the right (uneven on purpose) */
+@media (min-width: 860px) {
+  main {
+    grid-template-columns: 380px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  /* The form stays in view while you scroll the list */
+  main > .panel:first-child {
+    position: sticky;
+    top: 16px;
+  }
+}
+
+/* The form panel is an "elevated" card: heavier border = more important */
+main > .panel:first-child {
+  border: var(--border-heavy);
+  padding: 24px;
+}
+
+/* The list panel has no box, just its content */
+main > .panel:last-child {
+  border: none;
+  padding: 0;
+}
+
+.panel h2 {
+  margin: 0 0 24px;
+  font-family: var(--font-head);
+  font-weight: 400;
+  font-size: clamp(32px, 5vw, 48px);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+/* The form heading is smaller so it fits the narrow column */
+main > .panel:first-child h2 {
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+/* ===== Form ===== */
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-head);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.required {
+  font-family: var(--font-body);
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--black);
+  background: var(--sunken);
+  border: var(--border-thick);
+  appearance: none;
+}
+
+/* Put back the arrow on the dropdown, since appearance: none removes it */
+select {
+  background-image: linear-gradient(45deg, transparent 50%, var(--black) 50%),
+                    linear-gradient(135deg, var(--black) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  background-color: var(--sunken-hover);
+}
+
+/* Focus: the border gets heavier (5px). Padding shrinks by 2px so nothing jumps. */
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border: var(--border-heavy);
+  padding: 8px 10px;
+}
+
+select:focus {
+  padding-right: 34px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* ----- Checkbox: 20px square, black when ticked ----- */
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkbox-field label {
+  margin: 0;
+  cursor: pointer;
+}
+
+.checkbox-field input {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  flex-shrink: 0;
+  background: var(--white);
+  border: var(--border-thick);
+  cursor: pointer;
+}
+
+/* White tick drawn with a small SVG image */
+.checkbox-field input:checked {
+  background: var(--black)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 7l3.5 3.5L12 3' fill='none' stroke='white' stroke-width='3' stroke-linecap='square'/%3E%3C/svg%3E")
+    center / 12px no-repeat;
+}
+
+.checkbox-field input:focus-visible {
+  outline: none;
+  border-width: 5px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.form-buttons .button {
+  flex: 1;
+}
+
+/* ===== Buttons ===== */
+/* Default = "secondary": white with a black border, turns black on hover */
+.button {
+  min-height: 44px;
+  padding: 10px 24px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--black);
+  background: var(--white);
+  border: var(--border-thick);
+  cursor: pointer;
+}
+
+.button:hover {
+  color: var(--white);
+  background: var(--black);
+}
+
+/* Primary: black, turns white on hover (full inversion) */
+.button.primary {
+  color: var(--white);
+  background: var(--black);
+}
+
+.button.primary:hover {
+  color: var(--black);
+  background: var(--white);
+}
+
+.button.primary:active {
+  color: var(--white);
+  background: var(--black);
+  border-width: 5px;
+}
+
+/* Destructive (Delete): red, turns black on hover */
+.button.danger {
+  color: var(--white);
+  background: var(--error);
+}
+
+.button.danger:hover {
+  color: var(--error);
+  background: var(--black);
+}
+
+.button.small {
+  min-height: 32px;
+  padding: 6px 16px;
+  font-size: 12px;
+}
+
+/* Keyboard focus: a thick outline */
+.button:focus-visible,
+.filter-button:focus-visible,
+a:focus-visible {
+  outline: 5px solid var(--black);
+  outline-offset: 2px;
+}
+
+/* ===== Messages ===== */
+.message {
+  margin-bottom: 24px;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  background: var(--white);
+  border: var(--border-thick);
+}
+
+/* Black text stays readable; the coloured border shows the type of message */
+.message.error {
+  border-color: var(--error);
+  border-left-width: 16px;
+}
+
+.message.success {
+  border-color: var(--success);
+  border-left-width: 16px;
+}
+
+/* ===== Filter chips (All / Applied / Want to apply) ===== */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.filter-button {
+  padding: 4px 12px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--black);
+  background: var(--white);
+  border: 2px solid var(--black);
+  cursor: pointer;
+}
+
+.filter-button:hover,
+.filter-button[aria-pressed="true"] {
+  color: var(--white);
+  background: var(--black);
+}
+
+/* ===== Applications list: rows split by thick lines ===== */
+.card-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: var(--border-heavy);
+}
+
+.card {
+  padding: 24px 0;
+  border-bottom: var(--border-thick);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.card h3 {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  overflow-wrap: anywhere; /* long company names wrap instead of overflowing */
+}
+
+.card .role {
+  margin: 4px 0 16px;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* ----- Status chips: square, coloured border ----- */
+.badge,
+.pill {
+  display: inline-block;
+  padding: 2px 10px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  color: var(--black);
+  background: var(--white);
+  border: 2px solid var(--black);
+}
+
+/* Green = applied / offer */
+.badge.applied,
+.pill.callback-offer {
+  color: var(--success);
+  border-color: var(--success);
+}
+
+/* Orange = want to apply / phone screen.
+   Orange text on white is hard to read, so these use an orange fill with black text. */
+.badge.saved,
+.pill.callback-screen {
+  background: var(--warning);
+  border-color: var(--warning);
+}
+
+/* Interview = inverted (black block) so it stands out */
+.pill.callback-interview {
+  color: var(--white);
+  background: var(--black);
+}
+
+/* Red = rejected */
+.pill.callback-rejected {
+  color: var(--error);
+  border-color: var(--error);
+}
+
+/* ----- Date / callback details in monospace ----- */
+.details {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 24px;
+  align-items: center;
+  margin: 0 0 16px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+
+.details dt {
+  text-transform: uppercase;
+}
+
+.details dd {
+  margin: 0;
+}
+
+.notes {
+  margin: 0 0 16px;
+  padding-left: 12px;
+  border-left: var(--border-thick);
+  white-space: pre-wrap; /* keep line breaks the user typed */
+}
+
+/* Plain underlined blue links, no icons */
+.card-links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+
+.card-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+/* Empty state */
+.empty {
+  margin: 0;
+  padding: 40px 0;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  text-transform: uppercase;
+  border-bottom: var(--border-thick);
+}
